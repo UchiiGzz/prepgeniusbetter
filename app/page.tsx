@@ -14,7 +14,6 @@ import {
   ArrowRight,
   Zap,
   Target,
-  Layers,
   Sparkles,
   MessageSquare,
   BarChart2,
@@ -37,7 +36,7 @@ const ParticleField = () => {
   >([]);
 
   useEffect(() => {
-    // Generate random positions only on the client
+    if (typeof window === "undefined") return;
     const newParticles = [...Array(30)].map(() => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
@@ -52,20 +51,9 @@ const ParticleField = () => {
         <motion.div
           key={i}
           className="absolute w-1 h-1 bg-purple-500/20 rounded-full"
-          initial={{
-            x: particle.x,
-            y: particle.y,
-            opacity: 0.2,
-          }}
-          animate={{
-            y: [null, Math.random() * -500],
-            opacity: [0.2, 0],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            ease: "linear",
-          }}
+          initial={{ x: particle.x, y: particle.y, opacity: 0.2 }}
+          animate={{ y: [null, Math.random() * -500], opacity: [0.2, 0] }}
+          transition={{ duration: particle.duration, repeat: Infinity, ease: "linear" }}
         />
       ))}
     </div>
@@ -124,7 +112,7 @@ const FeatureCard = ({
   );
 };
 
-// --- Enhanced Step Component ---
+// --- Professional Step Component ---
 
 const Step = ({
   number,
@@ -148,13 +136,17 @@ const Step = ({
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay }}
     >
+      {/* Clean Number Circle */}
       <motion.div
-        className="relative w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold text-2xl mb-6 shadow-xl shadow-purple-900/20 z-10"
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        transition={{ type: "spring", stiffness: 400 }}
+        className="relative w-16 h-16 rounded-full border border-white/[0.08] bg-white/[0.02] flex items-center justify-center mb-8 z-10 group-hover:border-purple-500/50 transition-colors duration-300"
+        whileHover={{ scale: 1.05 }}
       >
-        {number}
-        <div className="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <span className="text-2xl font-bold text-white group-hover:text-purple-400 transition-colors duration-300">
+          {number}
+        </span>
+
+        {/* Subtle glow on hover */}
+        <div className="absolute inset-0 rounded-full bg-purple-500/10 opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-300" />
       </motion.div>
 
       <h3 className="text-xl font-semibold text-white mb-3">{title}</h3>
@@ -225,7 +217,6 @@ export default function LandingPage() {
       <div className="fixed inset-0 pointer-events-none">
         <ParticleField />
 
-        {/* Main gradient orbs */}
         <motion.div
           className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] rounded-full"
           style={{
@@ -240,10 +231,7 @@ export default function LandingPage() {
           }}
         />
 
-        {/* Grid pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
-
-        {/* Radial vignette */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#030308_70%)]" />
       </div>
 
@@ -311,7 +299,6 @@ export default function LandingPage() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         <AnimatePresence>
           {menuOpen && (
             <motion.div
@@ -348,7 +335,6 @@ export default function LandingPage() {
           style={{ y: y1, opacity, scale }}
           className="max-w-4xl z-10 w-full"
         >
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -364,7 +350,6 @@ export default function LandingPage() {
             </span>
           </motion.div>
 
-          {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -378,7 +363,6 @@ export default function LandingPage() {
             </span>
           </motion.h1>
 
-          {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -389,7 +373,6 @@ export default function LandingPage() {
             Get instant, actionable feedback on your answers.
           </motion.p>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -417,7 +400,6 @@ export default function LandingPage() {
             </motion.button>
           </motion.div>
 
-          {/* Trust Indicators */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -437,10 +419,7 @@ export default function LandingPage() {
       </section>
 
       {/* How it Works */}
-      <section
-        id="how-it-works"
-        className="relative py-28 px-6 z-10"
-      >
+      <section id="how-it-works" className="relative py-28 px-6 z-10">
         <div className="max-w-5xl mx-auto">
           <motion.div
             className="text-center mb-20"
@@ -680,7 +659,6 @@ export default function LandingPage() {
         </div>
       </footer>
 
-      {/* Global Styles */}
       <style jsx global>{`
         @keyframes gradient-shimmer {
           0% { background-position: 0% 50%; }
